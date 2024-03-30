@@ -755,7 +755,6 @@ namespace UnityExplorer.UI.Panels
         }
 
         public float GetRightThumbX() {
-            return 0;
             if (joystick == null) return 0;
 
             float returnValue = (currentState.RotationX - 32767f) / 32767f;
@@ -763,7 +762,6 @@ namespace UnityExplorer.UI.Panels
         }
 
         public float GetRightThumbY() {
-            return 0;
             if (joystick == null) return 0;
 
             float returnValue = (currentState.RotationY - 32767f) / 32767f;
@@ -771,14 +769,12 @@ namespace UnityExplorer.UI.Panels
         }
 
         public float GetTriggers() {
-            return 0;
             if (joystick == null) return 0;
 
             return (currentState.Z - 32767f) / 32767f;
         }
 
         public bool GetDPad(JoystickDPad input) {
-            return false;
             if (joystick == null) return false;
             int currentDPadValue = currentState.PointOfViewControllers[0];
             if (currentDPadValue == -1) return false;
@@ -797,7 +793,6 @@ namespace UnityExplorer.UI.Panels
         }
 
         public bool GetButton(JoystickButtons button) {
-            return false;
             if (joystick == null) return false;
 
             return currentState.Buttons[(int)button];
