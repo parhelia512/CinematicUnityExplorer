@@ -18,6 +18,8 @@ New-Item -Path "$Path" -Name "Mods" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.ML.IL2CPP.net6preview.dll -Destination $Path/Mods -Force
 New-Item -Path "$Path" -Name "UserLibs" -ItemType "directory" -Force
 Move-Item -Path $Path/UniverseLib.IL2CPP.Unhollower.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/UserLibs -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.net6preview.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.net6preview.zip
@@ -39,6 +41,8 @@ New-Item -Path "$Path" -Name "Mods" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.ML.IL2CPP.CoreCLR.dll -Destination $Path/Mods -Force
 New-Item -Path "$Path" -Name "UserLibs" -ItemType "directory" -Force
 Move-Item -Path $Path/UniverseLib.ML.IL2CPP.Interop.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/UserLibs -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip
@@ -57,6 +61,8 @@ New-Item -Path "$Path" -Name "Mods" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.ML.IL2CPP.dll -Destination $Path/Mods -Force
 New-Item -Path "$Path" -Name "UserLibs" -ItemType "directory" -Force
 Move-Item -Path $Path/UniverseLib.IL2CPP.Unhollower.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/UserLibs -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.zip
@@ -73,6 +79,8 @@ New-Item -Path "$Path" -Name "Mods" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.ML.Mono.dll -Destination $Path/Mods -Force
 New-Item -Path "$Path" -Name "UserLibs" -ItemType "directory" -Force
 Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/UserLibs -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/UserLibs -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.MelonLoader.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.MelonLoader.Mono.zip
@@ -91,6 +99,8 @@ New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
 New-Item -Path "$Path" -Name "plugins/CinematicUnityExplorer" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.BIE.IL2CPP.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 Move-Item -Path $Path/UniverseLib.IL2CPP.Unhollower.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.BepInEx.IL2CPP.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.BepInEx.IL2CPP.zip
@@ -112,6 +122,8 @@ New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
 New-Item -Path "$Path" -Name "plugins/CinematicUnityExplorer" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.BIE.IL2CPP.CoreCLR.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 Move-Item -Path $Path/UniverseLib.BIE.IL2CPP.Interop.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.BepInEx.IL2CPP.CoreCLR.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.BepInEx.IL2CPP.CoreCLR.zip
@@ -133,6 +145,8 @@ New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
 New-Item -Path "$Path" -Name "plugins/CinematicUnityExplorer" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.BIE.Unity.IL2CPP.CoreCLR.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 Move-Item -Path $Path/UniverseLib.BIE.IL2CPP.Interop.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip
@@ -149,6 +163,8 @@ New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
 New-Item -Path "$Path" -Name "plugins/CinematicUnityExplorer" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.BIE5.Mono.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.BepInEx5.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.BepInEx5.Mono.zip
@@ -165,6 +181,8 @@ New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
 New-Item -Path "$Path" -Name "plugins/CinematicUnityExplorer" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.BIE6.Mono.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.BepInEx6.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.BepInEx6.Mono.zip
@@ -181,6 +199,8 @@ New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
 New-Item -Path "$Path" -Name "plugins/CinematicUnityExplorer" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.BIE6.Unity.Mono.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
+Move-Item -Path $Path/SharpDX.DirectInput.dll -Destination $Path/plugins/CinematicUnityExplorer -Force
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.BepInEx6.Unity.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.BepInEx6.Unity.Mono.zip
@@ -214,5 +234,7 @@ $Path1 = "Release/CinematicUnityExplorer.Standalone.Mono"
 $Path2 = "UnityEditorPackage/Runtime"
 Copy-Item $Path1/CinematicUnityExplorer.STANDALONE.Mono.dll -Destination $Path2
 Copy-Item $Path1/UniverseLib.Mono.dll -Destination $Path2
+Copy-Item $Path1/SharpDX.dll -Destination $Path2
+Copy-Item $Path1/SharpDX.DirectInput.dll -Destination $Path2
 Remove-Item Release/CinematicUnityExplorer.Editor.zip -ErrorAction SilentlyContinue
 compress-archive .\UnityEditorPackage\*  Release/CinematicUnityExplorer.Editor.zip
