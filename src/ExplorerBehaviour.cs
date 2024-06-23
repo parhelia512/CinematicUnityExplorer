@@ -18,6 +18,7 @@ namespace UnityExplorer
     public class ExplorerBehaviour : MonoBehaviour
     {
         internal static ExplorerBehaviour Instance { get; private set; }
+        static public ExtendedTransformTools GizmoTools { get; private set; }
 
 #if CPP
         public ExplorerBehaviour(System.IntPtr ptr) : base(ptr) { }
@@ -33,6 +34,7 @@ namespace UnityExplorer
             DontDestroyOnLoad(obj);
             obj.hideFlags = HideFlags.HideAndDontSave;
             Instance = obj.AddComponent<ExplorerBehaviour>();
+            GizmoTools = obj.AddComponent<ExtendedTransformTools>();
         }
 
         internal void Update()

@@ -64,6 +64,7 @@ namespace UnityExplorer.Inspectors
 
         public override void CloseInspector()
         {
+            Controls.TransformControl.DisableGizmo();
             InspectorManager.ReleaseInspector(this);
         }
 

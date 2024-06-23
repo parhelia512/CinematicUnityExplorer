@@ -62,7 +62,10 @@ namespace UnityExplorer.UI.Panels
         }
 
         public void ResetAnimation(){
-            if (bonesManager != null) bonesManager.turnOffAnimatorToggle.isOn = true;
+            if (bonesManager != null){
+                bonesManager.turnOffAnimatorToggle.isOn = true;
+                bonesManager.DisableGizmos();
+            }
             // Let the game change animations again
             animator.StopPlayback();
             if (originalAnimatorController != null && animator.wrappedObject != null){

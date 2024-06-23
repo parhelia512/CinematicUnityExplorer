@@ -12,6 +12,8 @@ namespace UnityExplorer.UI.Widgets
 
         public AxisControl CurrentSlidingAxisControl { get; set; }
 
+        Dropdown gizmoDropdown;
+
         Vector3Control PositionControl;
         Vector3Control LocalPositionControl;
         Vector3Control RotationControl;
@@ -98,6 +100,25 @@ namespace UnityExplorer.UI.Widgets
             LocalPositionControl = Vector3Control.Create(this, transformGroup, "Local Position:", TransformType.LocalPosition);
             RotationControl = Vector3Control.Create(this, transformGroup, "Rotation:", TransformType.Rotation);
             ScaleControl = Vector3Control.Create(this, transformGroup, "Scale:", TransformType.Scale);
+
+            GameObject gizmoObj = UIFactory.CreateDropdown(transformGroup, "Gizmo_Dropdown", out gizmoDropdown, null, 14, (idx) => {
+                    ExplorerBehaviour.GizmoTools.targetTransform = Target.transform;
+                    ExplorerBehaviour.GizmoTools.ChangeGizmo((GizmoType)idx);
+                }
+            );
+            UIFactory.SetLayoutElement(gizmoObj, minHeight: 25, minWidth: 150);
+            gizmoDropdown.options.Add(new Dropdown.OptionData("No Gizmo"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Local Position"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Local Rotation"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Global Position"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Global Rotation"));
+            gizmoDropdown.captionText.text = "No Gizmo";
+        }
+
+        public void DisableGizmo(){
+            if (gizmoDropdown.value != 0){
+                gizmoDropdown.value = 0;
+            }
         }
     }
 }

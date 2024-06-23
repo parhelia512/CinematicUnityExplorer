@@ -39,6 +39,10 @@ namespace UnityExplorer.UI.Panels
                 boneScrollPool.Initialize(this);
                 DoneScrollPoolInit = true;
             }
+
+            if (!active){
+                DisableGizmos();
+            }
         }
 
         protected override void ConstructPanelContent()
@@ -77,6 +81,13 @@ namespace UnityExplorer.UI.Panels
                 }
             }
             animator.enabled = value;
+        }
+
+        public void DisableGizmos(){
+            // TODO: Create a structure for each cell data instead
+            foreach (BonesCell cell in boneScrollPool.CellPool){
+                cell.DisableGizmo();
+            }
         }
 
         public void RestoreBoneState(string boneName)

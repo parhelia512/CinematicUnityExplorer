@@ -17,6 +17,7 @@ namespace UnityExplorer.UI.Panels
         public AxisComponentControl CurrentSlidingAxisControl { get; set; }
         public BonesManager Owner;
         private ButtonRef inspectButton;
+        private Dropdown gizmoDropdown;
 
         // ICell
         public float DefaultHeight => 25f;
@@ -52,6 +53,20 @@ namespace UnityExplorer.UI.Panels
             UIFactory.SetLayoutElement(inspectButton.GameObject, minWidth: 150, minHeight: 25);
             inspectButton.OnClick += () => InspectorManager.Inspect(bone.gameObject);
 
+            GameObject gizmoObj = UIFactory.CreateDropdown(header, "Gizmo_Dropdown", out gizmoDropdown, null, 14, (idx) => {
+                    if (Owner.turnOffAnimatorToggle.isOn) Owner.turnOffAnimatorToggle.isOn = false;
+                    ExplorerBehaviour.GizmoTools.targetTransform = bone;
+                    ExplorerBehaviour.GizmoTools.ChangeGizmo((GizmoType)idx);
+                }
+            );
+            UIFactory.SetLayoutElement(gizmoObj, minHeight: 25, minWidth: 150);
+            gizmoDropdown.options.Add(new Dropdown.OptionData("No Gizmo"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Local Position"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Local Rotation"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Global Position"));
+            gizmoDropdown.options.Add(new Dropdown.OptionData("Global Rotation"));
+            gizmoDropdown.captionText.text = "No Gizmo";
+
             GameObject headerButtons = UIFactory.CreateUIObject("BoneHeader", header);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(headerButtons, false, false, true, true, 4, childAlignment: TextAnchor.MiddleRight);
             UIFactory.SetLayoutElement(headerButtons, minHeight: 25, flexibleWidth: 9999, flexibleHeight: 800);
@@ -73,6 +88,12 @@ namespace UnityExplorer.UI.Panels
 
         private void SetBoneEnabled(bool value){
             bone.gameObject.SetActive(value);
+        }
+
+        public void DisableGizmo(){
+            if (gizmoDropdown.value != 0){
+                gizmoDropdown.value = 0;
+            }
         }
 
         // TransformControls-like functions
