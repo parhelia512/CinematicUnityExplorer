@@ -43,7 +43,6 @@ New-Item -Path "$Path" -Name "Mods" -ItemType "directory" -Force
 Move-Item -Path $Path/CinematicUnityExplorer.ML.IL2CPP.CoreCLR.dll -Destination $Path/Mods -Force
 New-Item -Path "$Path" -Name "UserLibs" -ItemType "directory" -Force
 Move-Item -Path $Path/UniverseLib.ML.IL2CPP.Interop.dll -Destination $Path/UserLibs -Force
-
 # (create zip archive)
 Remove-Item $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../CinematicUnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip

@@ -245,6 +245,7 @@ namespace UniverseLib.Input
             }
             catch {  }
 
+            // The following patches should allow us to block controller input, but they don't seem to be doing anything.
             try
             {
                 MethodInfo getAxisTarget = t_Input.GetMethod("GetAxis", new Type[] {typeof(string)});
