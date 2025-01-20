@@ -75,9 +75,10 @@ namespace UnityExplorer.Serializers
             this.scale = scale;
         }
 
-        public readonly Vector3 position;
-        public readonly Vector3 angles;
-        public readonly Vector3 scale;
+        // They cant be read-only because it causes problems with XML serialization in older versions of .NET
+        public Vector3 position { get; set; }
+        public Vector3 angles { get; set; }
+        public Vector3 scale { get; set; }
 
         public void CopyToTransform(Transform transform){
             transform.localPosition = position;
