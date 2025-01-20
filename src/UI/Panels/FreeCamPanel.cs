@@ -77,6 +77,7 @@ namespace UnityExplorer.UI.Panels
         static ButtonRef inspectButton;
         public static Toggle followRotationToggle;
         static bool disabledCinemachine;
+        static bool disabledOrthographic;
 
         public static bool supportedInput => InputManager.CurrentType == InputType.Legacy;
 
@@ -151,6 +152,7 @@ namespace UnityExplorer.UI.Panels
                         currentCameraType = FreeCameraType.Gameplay;
                         ourCamera = lastMainCamera;
                         MaybeToggleCinemachine(false);
+                        MaybeToggleOrthographic(false);
 
                         // If the farClipPlaneValue is the default one try to use the one from the gameplay camera
                         if (farClipPlaneValue == 2000){
@@ -186,6 +188,7 @@ namespace UnityExplorer.UI.Panels
                         ourCamera = GameObject.Instantiate(lastMainCamera);
                         lastMainCamera.enabled = false;
                         MaybeToggleCinemachine(false);
+                        MaybeToggleOrthographic(false);
 
                         // If the farClipPlaneValue is the default one try to use the one from the gameplay camera
                         if (farClipPlaneValue == 2000){
@@ -208,6 +211,7 @@ namespace UnityExplorer.UI.Panels
                         // HDRP might introduce problems when moving the camera when replacing the worldToCameraMatrix,
                         // so we will try to move the real camera as well.
                         MaybeToggleCinemachine(false);
+                        MaybeToggleOrthographic(false);
 
                         cameraMatrixOverrider = new GameObject("[CUE] Camera Matrix Overrider").AddComponent<Camera>();
                         cameraMatrixOverrider.enabled = false;
@@ -258,6 +262,7 @@ namespace UnityExplorer.UI.Panels
             switch(currentCameraType) {
                 case FreeCameraType.Gameplay:
                     MaybeToggleCinemachine(true);
+                    MaybeToggleOrthographic(true);
                     ourCamera = null;
 
                     if (lastMainCamera)
@@ -277,6 +282,7 @@ namespace UnityExplorer.UI.Panels
                     break;
                 case FreeCameraType.ForcedMatrix:
                     MaybeToggleCinemachine(true);
+                    MaybeToggleOrthographic(true);
                     MethodInfo resetCullingMatrixMethod = typeof(Camera).GetMethod("ResetCullingMatrix", new Type[] {});
                     resetCullingMatrixMethod.Invoke(ourCamera, null);
 
@@ -335,6 +341,17 @@ namespace UnityExplorer.UI.Panels
                         break;
                     }
                 }
+            }
+        }
+
+        static void MaybeToggleOrthographic(bool enable){
+            // If we want to enable orthographic view but never disabled it don't do anything
+            if (enable && !disabledOrthographic)
+                return;
+            
+            if (ourCamera){
+                ourCamera.orthographic = enable;
+                disabledOrthographic = !enable;
             }
         }
 
