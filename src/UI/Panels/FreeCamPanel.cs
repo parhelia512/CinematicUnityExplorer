@@ -408,6 +408,7 @@ namespace UnityExplorer.UI.Panels
             UIFactory.SetLayoutElement(CameraMode.gameObject, minWidth: 100, minHeight: 25);
 
             GameObject cameraTypeDropdownObj = UIFactory.CreateDropdown(CameraModeRow, "CameraType_Dropdown", out cameraTypeDropdown, null, 14, (idx) => {
+                ConfigManager.Default_Freecam.Value = (FreeCameraType)idx;
                 if (inFreeCamMode) {
                     EndFreecam();
                     BeginFreecam();

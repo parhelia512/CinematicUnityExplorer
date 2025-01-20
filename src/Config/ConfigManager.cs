@@ -33,7 +33,6 @@ namespace UnityExplorer.Config
         public static ConfigElement<bool> Auto_Scale_UI;
         public static ConfigElement<bool> Reset_Camera_Transform;
 
-        public static ConfigElement<FreeCamPanel.FreeCameraType> Default_Freecam;
         public static ConfigElement<KeyCode> Pause;
         public static ConfigElement<KeyCode> Frameskip;
         public static ConfigElement<KeyCode> Screenshot;
@@ -60,6 +59,8 @@ namespace UnityExplorer.Config
         public static ConfigElement<KeyCode> Decrease_FOV;
         public static ConfigElement<KeyCode> Reset_FOV;
         public static ConfigElement<KeyCode> Toggle_Animations;
+
+        public static ConfigElement<FreeCamPanel.FreeCameraType> Default_Freecam;
 
         // internal configs
         internal static InternalConfigHandler InternalHandler { get; private set; }
@@ -191,10 +192,6 @@ namespace UnityExplorer.Config
                 "Reset the camera position and rotation between freecam sessions, so the freecam always starts from the gameplay position and rotation.",
                 false);
 
-            Default_Freecam = new("Default Freecam mode",
-                "Default type of freecam selected on startup.",
-                FreeCamPanel.FreeCameraType.New);
-
             Pause = new("Pause",
                 "Toggle the pause of the game.",
                 KeyCode.PageUp);
@@ -300,6 +297,10 @@ namespace UnityExplorer.Config
             Toggle_Animations = new("Toggle NPC animations",
                 "Toggle NPC animations as selected in the Animator panel.",
                 KeyCode.Keypad0);
+
+            Default_Freecam = new("Default Freecam mode",
+                "Default type of freecam selected on startup (gets automatically updated with the last type of camera used).",
+                FreeCamPanel.FreeCameraType.New);
         }
     }
 }
