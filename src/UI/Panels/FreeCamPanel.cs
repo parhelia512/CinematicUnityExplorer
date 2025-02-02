@@ -345,13 +345,19 @@ namespace UnityExplorer.UI.Panels
         }
 
         static void MaybeToggleOrthographic(bool enable){
-            // If we want to enable orthographic view but never disabled it don't do anything
-            if (enable && !disabledOrthographic)
-                return;
-            
-            if (ourCamera){
-                ourCamera.orthographic = enable;
-                disabledOrthographic = !enable;
+            if (ourCamera) {
+                if (enable) {
+                    // Only re-enable orthographic mode if we previously disabled it
+                    if (disabledOrthographic) {
+                        ourCamera.orthographic = true;
+                        disabledOrthographic = false;
+                    }
+                } else {
+                    if (ourCamera.orthographic) {
+                        disabledOrthographic = true;
+                        ourCamera.orthographic = false;
+                    }
+                }
             }
         }
 
