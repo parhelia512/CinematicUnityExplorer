@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityExplorer.Config;
 #if UNHOLLOWER
 using IL2CPPUtils = UnhollowerBaseLib.UnhollowerUtils;
 #endif
@@ -12,8 +13,12 @@ namespace UnityExplorer
 {
     public class ArrowGenerator
     {
-        public static GameObject CreateArrow(Vector3 arrowPosition, Quaternion arrowRotation, Color color){
+        public static GameObject CreateArrow(Vector3 arrowPosition, Quaternion arrowRotation, Color color)
+        {
             try {
+                float arrowSizeValue = ConfigManager.Arrow_Size.Value;
+                Vector3 arrowSize = new Vector3(Math.Max(arrowSizeValue, 0.1f), Math.Max(arrowSizeValue, 0.1f), Math.Max(arrowSizeValue, 0.1f));
+
                 GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                 cylinder.GetComponent<Collider>().enabled = false;
                 cylinder.GetComponent<MeshFilter>().mesh = CreateCylinderMesh(0.01f, 20, 2);
@@ -34,6 +39,7 @@ namespace UnityExplorer
 
                 GameObject arrow = new GameObject("CUE-Arrow");
                 cylinder.transform.SetParent(arrow.transform, true);
+                arrow.transform.localScale = arrowSize;
                 arrow.transform.position = arrowPosition;
                 arrow.transform.rotation = arrowRotation;
                 arrow.transform.position += 0.5f * arrow.transform.forward; // Move the arrow forward so the cylinder starts on the wanted position
