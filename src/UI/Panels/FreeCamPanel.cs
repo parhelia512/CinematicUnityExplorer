@@ -1068,40 +1068,48 @@ namespace UnityExplorer.UI.Panels
                 ExplorerCore.LogWarning($"Failed to listen to BeforeRender: {exception}");
             }
 #endif
-            // These doesn't exist for Unity <2017 nor when using HDRP
-            Type renderPipelineManagerType = ReflectionUtility.GetTypeByName("RenderPipelineManager");
-            if (renderPipelineManagerType != null){
-                EventInfo beginFrameRenderingEvent = renderPipelineManagerType.GetEvent("beginFrameRendering");
-                if (beginFrameRenderingEvent != null) {
-                    beginFrameRenderingEvent.AddEventHandler(null, OnBeforeEvent);
-                }
-                EventInfo endFrameRenderingEvent = renderPipelineManagerType.GetEvent("endFrameRendering");
-                if (endFrameRenderingEvent != null) {
-                    endFrameRenderingEvent.AddEventHandler(null, OnAfterEvent);
+
+            try
+            {
+                // These doesn't exist for Unity <2017 nor when using HDRP
+                Type renderPipelineManagerType = ReflectionUtility.GetTypeByName("RenderPipelineManager");
+                if (renderPipelineManagerType != null){
+                    EventInfo beginFrameRenderingEvent = renderPipelineManagerType.GetEvent("beginFrameRendering");
+                    if (beginFrameRenderingEvent != null) {
+                        beginFrameRenderingEvent.AddEventHandler(null, OnBeforeEvent);
+                    }
+                    EventInfo endFrameRenderingEvent = renderPipelineManagerType.GetEvent("endFrameRendering");
+                    if (endFrameRenderingEvent != null) {
+                        endFrameRenderingEvent.AddEventHandler(null, OnAfterEvent);
+                    }
+
+                    EventInfo beginCameraRenderingEvent = renderPipelineManagerType.GetEvent("beginCameraRendering");
+                    if (beginCameraRenderingEvent != null) {
+                        beginCameraRenderingEvent.AddEventHandler(null, OnBeforeEvent);
+                    }
+                    EventInfo endCameraRenderingEvent = renderPipelineManagerType.GetEvent("endCameraRendering");
+                    if (endCameraRenderingEvent != null) {
+                        endCameraRenderingEvent.AddEventHandler(null, OnAfterEvent);
+                    }
+
+                    EventInfo beginContextRenderingEvent = renderPipelineManagerType.GetEvent("beginContextRendering");
+                    if (beginContextRenderingEvent != null) {
+                        beginContextRenderingEvent.AddEventHandler(null, OnBeforeEvent);
+                    }
+                    EventInfo endContextRenderingEvent = renderPipelineManagerType.GetEvent("endContextRendering");
+                    if (endContextRenderingEvent != null) {
+                        endContextRenderingEvent.AddEventHandler(null, OnAfterEvent);
+                    }
                 }
 
-                EventInfo beginCameraRenderingEvent = renderPipelineManagerType.GetEvent("beginCameraRendering");
-                if (beginCameraRenderingEvent != null) {
-                    beginCameraRenderingEvent.AddEventHandler(null, OnBeforeEvent);
-                }
-                EventInfo endCameraRenderingEvent = renderPipelineManagerType.GetEvent("endCameraRendering");
-                if (endCameraRenderingEvent != null) {
-                    endCameraRenderingEvent.AddEventHandler(null, OnAfterEvent);
-                }
-
-                EventInfo beginContextRenderingEvent = renderPipelineManagerType.GetEvent("beginContextRendering");
-                if (beginContextRenderingEvent != null) {
-                    beginContextRenderingEvent.AddEventHandler(null, OnBeforeEvent);
-                }
-                EventInfo endContextRenderingEvent = renderPipelineManagerType.GetEvent("endContextRendering");
-                if (endContextRenderingEvent != null) {
-                    endContextRenderingEvent.AddEventHandler(null, OnAfterEvent);
+                EventInfo onBeforeRenderEvent = typeof(Application).GetEvent("onBeforeRender");
+                if (onBeforeRenderEvent != null) {
+                    onBeforeRenderEvent.AddEventHandler(null, onBeforeRenderAction);
                 }
             }
-
-            EventInfo onBeforeRenderEvent = typeof(Application).GetEvent("onBeforeRender");
-            if (onBeforeRenderEvent != null) {
-                onBeforeRenderEvent.AddEventHandler(null, onBeforeRenderAction);
+            catch (Exception exception)
+            {
+                ExplorerCore.LogWarning($"Failed to add event handler to rendering pipeline: {exception}");
             }
         }
 
@@ -1117,41 +1125,48 @@ namespace UnityExplorer.UI.Panels
                 ExplorerCore.LogWarning($"Failed to unlisten from BeforeRender: {exception}");
             }
 #endif
-            // These doesn't exist for Unity <2017 nor when using HDRP
-            Type renderPipelineManagerType = ReflectionUtility.GetTypeByName("RenderPipelineManager");
 
-            if (renderPipelineManagerType != null){
-                EventInfo beginFrameRenderingEvent = renderPipelineManagerType.GetEvent("beginFrameRendering");
-                if (beginFrameRenderingEvent != null) {
-                    beginFrameRenderingEvent.RemoveEventHandler(null, OnBeforeEvent);
-                }
-                EventInfo endFrameRenderingEvent = renderPipelineManagerType.GetEvent("endFrameRendering");
-                if (endFrameRenderingEvent != null) {
-                    endFrameRenderingEvent.RemoveEventHandler(null, OnAfterEvent);
+            try
+            {
+                // These doesn't exist for Unity <2017 nor when using HDRP
+                Type renderPipelineManagerType = ReflectionUtility.GetTypeByName("RenderPipelineManager");
+                if (renderPipelineManagerType != null){
+                    EventInfo beginFrameRenderingEvent = renderPipelineManagerType.GetEvent("beginFrameRendering");
+                    if (beginFrameRenderingEvent != null) {
+                        beginFrameRenderingEvent.RemoveEventHandler(null, OnBeforeEvent);
+                    }
+                    EventInfo endFrameRenderingEvent = renderPipelineManagerType.GetEvent("endFrameRendering");
+                    if (endFrameRenderingEvent != null) {
+                        endFrameRenderingEvent.RemoveEventHandler(null, OnAfterEvent);
+                    }
+
+                    EventInfo beginCameraRenderingEvent = renderPipelineManagerType.GetEvent("beginCameraRendering");
+                    if (beginCameraRenderingEvent != null) {
+                        beginCameraRenderingEvent.RemoveEventHandler(null, OnBeforeEvent);
+                    }
+                    EventInfo endCameraRenderingEvent = renderPipelineManagerType.GetEvent("endCameraRendering");
+                    if (endCameraRenderingEvent != null) {
+                        endCameraRenderingEvent.RemoveEventHandler(null, OnAfterEvent);
+                    }
+
+                    EventInfo beginContextRenderingEvent = renderPipelineManagerType.GetEvent("beginContextRendering");
+                    if (beginContextRenderingEvent != null) {
+                        beginContextRenderingEvent.RemoveEventHandler(null, OnBeforeEvent);
+                    }
+                    EventInfo endContextRenderingEvent = renderPipelineManagerType.GetEvent("endContextRendering");
+                    if (endContextRenderingEvent != null) {
+                        endContextRenderingEvent.RemoveEventHandler(null, OnAfterEvent);
+                    }
                 }
 
-                EventInfo beginCameraRenderingEvent = renderPipelineManagerType.GetEvent("beginCameraRendering");
-                if (beginCameraRenderingEvent != null) {
-                    beginCameraRenderingEvent.RemoveEventHandler(null, OnBeforeEvent);
-                }
-                EventInfo endCameraRenderingEvent = renderPipelineManagerType.GetEvent("endCameraRendering");
-                if (endCameraRenderingEvent != null) {
-                    endCameraRenderingEvent.RemoveEventHandler(null, OnAfterEvent);
-                }
-
-                EventInfo beginContextRenderingEvent = renderPipelineManagerType.GetEvent("beginContextRendering");
-                if (beginContextRenderingEvent != null) {
-                    beginContextRenderingEvent.RemoveEventHandler(null, OnBeforeEvent);
-                }
-                EventInfo endContextRenderingEvent = renderPipelineManagerType.GetEvent("endContextRendering");
-                if (endContextRenderingEvent != null) {
-                    endContextRenderingEvent.RemoveEventHandler(null, OnAfterEvent);
+                EventInfo onBeforeRenderEvent = typeof(Application).GetEvent("onBeforeRender");
+                if (onBeforeRenderEvent != null) {
+                    onBeforeRenderEvent.RemoveEventHandler(null, onBeforeRenderAction);
                 }
             }
-
-            EventInfo onBeforeRenderEvent = typeof(Application).GetEvent("onBeforeRender");
-            if (onBeforeRenderEvent != null) {
-                onBeforeRenderEvent.RemoveEventHandler(null, onBeforeRenderAction);
+            catch (Exception exception)
+            {
+                ExplorerCore.LogWarning($"Failed to remove event handler from rendering pipeline: {exception}");
             }
         }
 

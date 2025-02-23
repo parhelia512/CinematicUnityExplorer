@@ -191,7 +191,7 @@ namespace UnityExplorer.Config
 
             Reset_Camera_Transform = new("Reset Camera transform on freecam disable",
                 "Reset the camera position and rotation between freecam sessions, so the freecam always starts from the gameplay position and rotation.",
-                false);
+                true);
             
             Arrow_Size = new("Visualizers arrows size",
                 "Cam Paths nodes and Lights Manager lights visualizers' arrow size (must be positive) (needs visualizer toggled to reflect changes).",
