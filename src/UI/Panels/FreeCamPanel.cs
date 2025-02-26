@@ -187,7 +187,7 @@ namespace UnityExplorer.UI.Panels
 
                         ourCamera = GameObject.Instantiate(lastMainCamera);
                         lastMainCamera.enabled = false;
-                        MaybeToggleCinemachine(false);
+                        MaybeDeleteCinemachine();
                         MaybeToggleOrthographic(false);
 
                         // If the farClipPlaneValue is the default one try to use the one from the gameplay camera
@@ -338,6 +338,20 @@ namespace UnityExplorer.UI.Panels
                     if (comp_type == "Cinemachine.CinemachineBrain" || comp_type == "Il2CppCinemachine.CinemachineBrain"){
                         comp.enabled = enable;
                         disabledCinemachine = !enable;
+                        break;
+                    }
+                }
+            }
+        }
+
+        static void MaybeDeleteCinemachine(){
+            if (ourCamera){
+                IEnumerable<Behaviour> comps = ourCamera.GetComponentsInChildren<Behaviour>();
+                foreach (Behaviour comp in comps)
+                {
+                    string comp_type = comp.GetActualType().ToString();
+                    if (comp_type == "Cinemachine.CinemachineBrain" || comp_type == "Il2CppCinemachine.CinemachineBrain"){
+                        GameObject.Destroy(comp);
                         break;
                     }
                 }
