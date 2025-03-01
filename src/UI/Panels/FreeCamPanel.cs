@@ -1002,11 +1002,25 @@ namespace UnityExplorer.UI.Panels
             if (IInputManager.GetKey(ConfigManager.Down.Value))
                 transform.position += transform.up * -1 * moveSpeed;
 
-            if (IInputManager.GetKey(ConfigManager.Tilt_Left.Value))
-                transform.Rotate(0, 0, moveSpeed * 10, Space.Self);
-
-            if (IInputManager.GetKey(ConfigManager.Tilt_Right.Value))
-                transform.Rotate(0, 0, - moveSpeed * 10, Space.Self);
+            // 90 degrees tilt when pressing the speed down hotkey
+            if (IInputManager.GetKey(ConfigManager.Speed_Down_Movement.Value))
+            {
+                if (IInputManager.GetKeyDown(ConfigManager.Tilt_Left.Value)) {
+                    transform.Rotate(0, 0, 90, Space.Self);
+                }
+                else if (IInputManager.GetKeyDown(ConfigManager.Tilt_Right.Value)) {
+                    transform.Rotate(0, 0, - 90, Space.Self);
+                }
+            }
+            else
+            {
+                if (IInputManager.GetKey(ConfigManager.Tilt_Left.Value)) {
+                    transform.Rotate(0, 0, moveSpeed * 10, Space.Self);
+                }
+                else if (IInputManager.GetKey(ConfigManager.Tilt_Right.Value)) {
+                    transform.Rotate(0, 0, - moveSpeed * 10, Space.Self);
+                }
+            }
 
             if (IInputManager.GetKey(ConfigManager.Tilt_Reset.Value)){
                 // Extract the forward direction of the original quaternion
