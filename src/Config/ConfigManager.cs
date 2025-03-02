@@ -62,6 +62,7 @@ namespace UnityExplorer.Config
         public static ConfigElement<KeyCode> Toggle_Animations;
 
         public static ConfigElement<FreeCamPanel.FreeCameraType> Default_Freecam;
+        public static ConfigElement<string> Custom_Components_To_Disable;
 
         // internal configs
         internal static InternalConfigHandler InternalHandler { get; private set; }
@@ -306,6 +307,10 @@ namespace UnityExplorer.Config
             Default_Freecam = new("Default Freecam mode",
                 "Default type of freecam selected on startup (gets automatically updated with the last type of camera used).",
                 FreeCamPanel.FreeCameraType.New);
+
+            Custom_Components_To_Disable = new("Custom components to disable",
+                "List of custom components to disable when enabling the freecam (gets automatically updated when editing it from the freecam panel).",
+                "");
         }
     }
 }

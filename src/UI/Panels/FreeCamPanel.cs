@@ -73,11 +73,14 @@ namespace UnityExplorer.UI.Panels
         public static Toggle blockGamesInputOnFreecamToggle;
         static InputFieldRef positionInput;
         static InputFieldRef moveSpeedInput;
+        static InputFieldRef componentsToDisableInput;
         static Text followLookAtObjectLabel;
         static ButtonRef inspectButton;
         public static Toggle followRotationToggle;
         static bool disabledCinemachine;
         static bool disabledOrthographic;
+        static List<string> stringComponentsToDisable = new();
+        static List<Behaviour> componentsToDisable = new();
 
         public static bool supportedInput => InputManager.CurrentType == InputType.Legacy;
 
@@ -153,6 +156,7 @@ namespace UnityExplorer.UI.Panels
                         ourCamera = lastMainCamera;
                         MaybeToggleCinemachine(false);
                         MaybeToggleOrthographic(false);
+                        ToggleCustomComponents(false);
 
                         // If the farClipPlaneValue is the default one try to use the one from the gameplay camera
                         if (farClipPlaneValue == 2000){
@@ -189,6 +193,7 @@ namespace UnityExplorer.UI.Panels
                         lastMainCamera.enabled = false;
                         MaybeDeleteCinemachine();
                         MaybeToggleOrthographic(false);
+                        ToggleCustomComponents(false);
 
                         // If the farClipPlaneValue is the default one try to use the one from the gameplay camera
                         if (farClipPlaneValue == 2000){
@@ -212,6 +217,7 @@ namespace UnityExplorer.UI.Panels
                         // so we will try to move the real camera as well.
                         MaybeToggleCinemachine(false);
                         MaybeToggleOrthographic(false);
+                        ToggleCustomComponents(false);
 
                         cameraMatrixOverrider = new GameObject("[CUE] Camera Matrix Overrider").AddComponent<Camera>();
                         cameraMatrixOverrider.enabled = false;
@@ -263,6 +269,7 @@ namespace UnityExplorer.UI.Panels
                 case FreeCameraType.Gameplay:
                     MaybeToggleCinemachine(true);
                     MaybeToggleOrthographic(true);
+                    ToggleCustomComponents(true);
                     ourCamera = null;
 
                     if (lastMainCamera)
@@ -283,6 +290,7 @@ namespace UnityExplorer.UI.Panels
                 case FreeCameraType.ForcedMatrix:
                     MaybeToggleCinemachine(true);
                     MaybeToggleOrthographic(true);
+                    ToggleCustomComponents(true);
                     MethodInfo resetCullingMatrixMethod = typeof(Camera).GetMethod("ResetCullingMatrix", new Type[] {});
                     resetCullingMatrixMethod.Invoke(ourCamera, null);
 
@@ -455,6 +463,12 @@ namespace UnityExplorer.UI.Panels
 
             AddSpacer(5);
 
+            AddInputField("ComponentsToDisable", "Components To Disable:", "CinemachineBrain", out componentsToDisableInput, ComponentsToDisableInput_OnEndEdit, 175);
+            componentsToDisableInput.Text = ConfigManager.Custom_Components_To_Disable.Value;
+            stringComponentsToDisable = ConfigManager.Custom_Components_To_Disable.Value.Split(',').Select(c => c.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToList();
+
+            AddSpacer(5);
+
             GameObject togglesRow = UIFactory.CreateHorizontalGroup(ContentRoot, "TogglesRow", false, false, true, true, 3, default, new(1, 1, 1, 0));
 
             GameObject blockFreecamMovement = UIFactory.CreateToggle(togglesRow, "blockFreecamMovement", out blockFreecamMovementToggle, out Text blockFreecamMovementText);
@@ -591,12 +605,12 @@ namespace UnityExplorer.UI.Panels
             UIFactory.SetLayoutElement(obj, minHeight: height, flexibleHeight: 0);
         }
 
-        GameObject AddInputField(string name, string labelText, string placeHolder, out InputFieldRef inputField, Action<string> onInputEndEdit)
+        GameObject AddInputField(string name, string labelText, string placeHolder, out InputFieldRef inputField, Action<string> onInputEndEdit, int minTextWidth = 100)
         {
             GameObject row = UIFactory.CreateHorizontalGroup(ContentRoot, $"{name}_Group", false, false, true, true, 3, default, new(1, 1, 1, 0));
 
             Text posLabel = UIFactory.CreateLabel(row, $"{name}_Label", labelText);
-            UIFactory.SetLayoutElement(posLabel.gameObject, minWidth: 100, minHeight: 25);
+            UIFactory.SetLayoutElement(posLabel.gameObject, minWidth: minTextWidth, minHeight: 25);
 
             inputField = UIFactory.CreateInputField(row, $"{name}_Input", placeHolder);
             UIFactory.SetLayoutElement(inputField.GameObject, minWidth: 50, minHeight: 25, flexibleWidth: 9999);
@@ -736,6 +750,121 @@ namespace UnityExplorer.UI.Panels
             }
 
             desiredMoveSpeed = parsed;
+        }
+
+        void ComponentsToDisableInput_OnEndEdit(string input)
+        {
+            EventSystemHelper.SetSelectedGameObject(null);
+
+            ConfigManager.Custom_Components_To_Disable.Value = input;
+            stringComponentsToDisable = input.Split(',').Select(c => c.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToList();
+        }
+
+        static List<Behaviour> GetComponentsToDisable()
+        {
+            List<Behaviour> components = new();
+            if (stringComponentsToDisable == null || stringComponentsToDisable.Count == 0)
+            {
+                return components;
+            }
+
+            foreach (string stringComponent in stringComponentsToDisable)
+            {
+                List<string> pathToComponent = stringComponent.Split('/').Where(x => !string.IsNullOrEmpty(x)).ToList();
+                GameObject currentGameObject = ourCamera.gameObject;
+                for (var i = 0; i < pathToComponent.Count; i++)
+                {
+                    string pathStep = pathToComponent[i];
+                    if (i == 0 && pathStep == "~")
+                    {
+                        // Check if we can find the next steps game object in the path
+                        i++;
+                        pathStep = pathToComponent[i];
+                        GameObject foundNextPathStep = null;
+                        foreach (GameObject obj in SceneManager.GetActiveScene().GetRootGameObjects()) {
+                            if (obj.name == pathStep)
+                            {
+                                foundNextPathStep = obj;
+                                break;
+                            }
+                        }
+
+                        if (!foundNextPathStep)
+                        {
+                            ExplorerCore.LogWarning($"Couldn't find {stringComponent} component to disable it.");
+                            break;
+                        }
+                        currentGameObject = foundNextPathStep;
+                        continue;
+                    }
+
+                    if (pathStep == "..") {
+                        if (!currentGameObject.transform.parent)
+                        {
+                            ExplorerCore.LogWarning($"Couldn't find {stringComponent} component to disable it.");
+                            break;
+                        }
+
+                        currentGameObject = currentGameObject.transform.parent.gameObject;
+                        continue;
+                    }
+
+                    // Last member of the path, should be a component
+                    if (i == pathToComponent.Count - 1) {
+                        Behaviour comp = GetComponentByName(currentGameObject, pathStep);
+                        if (!comp)
+                        {
+                            // Should we allow to disable entire GameObjects here if it can't find the right component?
+                            ExplorerCore.LogWarning($"Couldn't find {stringComponent} component to disable it.");
+                            break;
+                        }
+
+                        components.Add(comp);
+                    }
+                    else {
+                        Transform nextGameObjectTransform = currentGameObject.transform.Find(pathStep);
+                        if (!nextGameObjectTransform)
+                        {
+                            ExplorerCore.LogWarning($"Couldn't find {stringComponent} component to disable it.");
+                            break;
+                        }
+
+                        currentGameObject = nextGameObjectTransform.gameObject;
+                    }
+                }
+            }
+            return components;
+        }
+
+        static void ToggleCustomComponents(bool enable)
+        {
+            // If disable get the components again
+            if (!enable)
+            {
+                componentsToDisable = GetComponentsToDisable();
+            }
+
+            foreach(Behaviour comp in componentsToDisable)
+            {
+                // We could outright delete the components if on Cloned freecam mode
+                comp.enabled = enable;
+            }
+        }
+
+        static Behaviour GetComponentByName(GameObject obj, string componentsName)
+        {
+            if (obj)
+            {
+                IEnumerable<Behaviour> comps = obj.GetComponents<Behaviour>();
+                foreach (Behaviour comp in comps)
+                {
+                    string comp_type = comp.GetActualType().ToString();
+                    if (comp_type == componentsName){
+                        return comp;
+                    }
+                }
+            }
+            return null;
         }
 
         void NearClipInput_OnEndEdit(string input)
